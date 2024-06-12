@@ -202,6 +202,26 @@
             margin-top: 5px;
         }
 
+        .recommendation-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .recommendation {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .recommendation:hover {
+            background-color: #ffd200;
+            color: white;
+        }
+
         .popup {
             display: none;
             position: absolute;
@@ -301,6 +321,25 @@
     <script>
         let isFirstTime = true;
 
+        const recommendations = [
+            "Harga",
+            "Tentang Runi",
+            "Jadi Mitra",
+            "Cara Pesan",
+            "Cara Bayar",
+            "Layanan CS",
+            "Paket Reguler",
+            "Paket Plus",
+            "Paket Spesial",
+            "Lama Pengerjaan",
+            "Tentang Rumahkini"
+        ];
+
+        function getRandomRecommendations() {
+            let shuffled = recommendations.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 3);
+        }
+
         function toggleChat() {
             var chatbotWindow = document.getElementById('chatbotWindow');
             var chatbotButtonIcon = document.querySelector('.chatbot-button i');
@@ -362,7 +401,28 @@
                 greetingMessageElement.innerText = "Halo, ada yang bisa Runi bantu? :)";
                 timeStamp.innerText = new Date().toLocaleTimeString();
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                displayRecommendations();
             }, 3000);
+        }
+
+        function displayRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            getRandomRecommendations().forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                recommendationElement.onclick = () => {
+                    document.getElementById('message').value = rec;
+                    sendMessage();
+                };
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
         function sendMessage() {
@@ -436,6 +496,9 @@
                     botMessageElement.innerText = responseData.response;
                     botTimeStamp.innerText = new Date().toLocaleTimeString();
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    if (responseData.tag === 'diluar_konteks') {
+                        displayRecommendations();
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -478,7 +541,6 @@
             document.getElementById('chatbotWindow').style.display = 'none';
         });
     </script>
-
 </body>
 </html>
 
