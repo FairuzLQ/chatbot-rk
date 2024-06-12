@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Frontend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .chatbot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffd200;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .chatbot-button:hover {
+            background-color: white;
+            color: #ffd200;
+        }
+
+        .chatbot-button:hover i {
+            color: #ffd200;
+        }
+
+        .chatbot-button i {
+            transition: opacity 0.1s ease;
+        }
+
+        .chatbot-window {
+            display: none;
+            position: fixed;
+            bottom: 90px; /* Increased distance */
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .chatbot-window.open {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: #ffd200;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 20px; /* Larger font size */
+        }
+
+        .chatbot-header .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .chatbot-header img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .chatbot-header .menu {
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background-color: #f1f1f1;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .chatbot-input input:focus {
+            border-color: #ffd200; /* Change border color to yellow on focus */
+        }
+
+        .chatbot-input button {
+            padding: 10px;
+            border: none;
+            background-color: #f3c807;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .chatbot-input button i {
+            font-size: 20px;
+        }
+
+        .chatbot-input button:hover {
+            background-color: white;
+            color: #f3c807;
+        }
+
+        .chatbot-input button:hover i {
+            color: #f3c807;
+        }
+
+        .message-container {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 10px;
+            flex-direction: column;
+        }
+
+        .message-container.user {
+            align-items: flex-end;
+        }
+
+        .message-container.bot {
+            align-items: flex-start;
+        }
+
+        .message-container img {
+            width: 40px;  /* Increase the width */
+            height: 40px; /* Increase the height */
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+
+        .message {
+            display: inline-block;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .message.user {
+            background-color: #f3c807;
+            color: white;
+            text-align: right;
+        }
+
+        .message.bot {
+            background-color: #E6EBE1;
+            color: black;
+        }
+
+        .time-stamp {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .popup {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+
+        .popup .popup-header {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .popup .popup-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup .popup-buttons button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .popup .popup-buttons .yes {
+            background-color: #f3c807;
+            color: white;
+        }
+
+        .popup .popup-buttons .yes:hover {
+            background-color: #f1f1f1;
+            color: #f3c807;
+        }
+
+        .popup .popup-buttons .no {
+            background-color: #ccc;
+            color: black;
+        }
+
+        .popup .popup-buttons .no:hover {
+            background-color: black;
+            color: #ccc;
+        }
+
+        .overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <button class="chatbot-button" onclick="toggleChat()">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div class="header-content">
+                <img src="runi.webp" alt="Runi">
+                Runi
+            </div>
+            <div class="menu" onclick="showPopup()">✖</div>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="message" placeholder="Tulis pesan..." onkeydown="checkEnter(event)">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div class="overlay" id="overlay"></div>
+        <div class="popup" id="popup">
+            <div class="popup-header">Apakah kamu yakin ingin menghapus riwayat percakapan?</div>
+            <div class="popup-buttons">
+                <button class="yes" onclick="clearChat()">Ya</button>
+                <button class="no" onclick="hidePopup()">Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isFirstTime = true;
+
+        function toggleChat() {
+            var chatbotWindow = document.getElementById('chatbotWindow');
+            var chatbotButtonIcon = document.querySelector('.chatbot-button i');
+            chatbotButtonIcon.style.opacity = '0';
+
+            setTimeout(() => {
+                if (chatbotWindow.style.display === 'none' || chatbotWindow.style.display === '') {
+                    chatbotWindow.style.display = 'flex';
+                    setTimeout(() => chatbotWindow.classList.add('open'), 10);
+                    chatbotButtonIcon.className = 'fas fa-times';
+                    if (isFirstTime) {
+                        displayGreeting();
+                        isFirstTime = false;
+                    }
+                } else {
+                    chatbotWindow.classList.remove('open');
+                    setTimeout(() => chatbotWindow.style.display = 'none', 300);
+                    chatbotButtonIcon.className = 'fas fa-comments';
+                }
+                chatbotButtonIcon.style.opacity = '1';
+            }, 100);
+        }
+
+        function displayGreeting() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const greetingMessageContainer = document.createElement('div');
+            greetingMessageContainer.className = 'message-container bot';
+            
+            const greetingMessageElement = document.createElement('div');
+            greetingMessageElement.className = 'message bot';
+            greetingMessageElement.innerText = ".";
+
+            const botAvatar = document.createElement('img');
+            botAvatar.src = "runi.webp";
+            botAvatar.alt = "Runi";
+
+            const timeStamp = document.createElement('div');
+            timeStamp.className = 'time-stamp';
+            timeStamp.innerText = new Date().toLocaleTimeString();
+
+            greetingMessageContainer.appendChild(botAvatar);
+            greetingMessageContainer.appendChild(greetingMessageElement);
+            greetingMessageContainer.appendChild(timeStamp);
+            messagesContainer.appendChild(greetingMessageContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Simulate bot thinking with incremental dots
+            setTimeout(() => {
+                greetingMessageElement.innerText = "..";
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+
+            setTimeout(() => {
+                greetingMessageElement.innerText = "...";
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 2000);
+
+            setTimeout(() => {
+                greetingMessageElement.innerText = "Halo, ada yang bisa Runi bantu? :)";
+                timeStamp.innerText = new Date().toLocaleTimeString();
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 3000);
+        }
+
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chatbotMessages');
+            
+            // Display user message
+            const userMessageContainer = document.createElement('div');
+            userMessageContainer.className = 'message-container user';
+            
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user';
+            userMessageElement.innerText = message;
+
+            const userTimeStamp = document.createElement('div');
+            userTimeStamp.className = 'time-stamp';
+            userTimeStamp.innerText = new Date().toLocaleTimeString();
+
+            userMessageContainer.appendChild(userMessageElement);
+            userMessageContainer.appendChild(userTimeStamp);
+            messagesContainer.appendChild(userMessageContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Clear input
+            document.getElementById('message').value = '';
+
+            const botMessageContainer = document.createElement('div');
+            botMessageContainer.className = 'message-container bot';
+
+            const botMessageElement = document.createElement('div');
+            botMessageElement.className = 'message bot';
+            botMessageElement.innerText = ".";
+            
+            const botAvatar = document.createElement('img');
+            botAvatar.src = "runi.webp";
+            botAvatar.alt = "Runi";
+
+            const botTimeStamp = document.createElement('div');
+            botTimeStamp.className = 'time-stamp';
+
+            botMessageContainer.appendChild(botAvatar);
+            botMessageContainer.appendChild(botMessageElement);
+            botMessageContainer.appendChild(botTimeStamp);
+            messagesContainer.appendChild(botMessageContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Simulate bot thinking with incremental dots
+            setTimeout(() => {
+                botMessageElement.innerText = "..";
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+
+            setTimeout(() => {
+                botMessageElement.innerText = "...";
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 2000);
+
+            setTimeout(() => {
+                fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const responseData = data.data;
+                    botMessageElement.innerText = responseData.response;
+                    botTimeStamp.innerText = new Date().toLocaleTimeString();
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    botMessageElement.innerText = "Mohon maaf, sepertinya server Runi sedang bermasalah.";
+                    botTimeStamp.innerText = new Date().toLocaleTimeString();
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                });
+            }, 3000);
+        }
+
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.querySelector('.chatbot-input input').disabled = true;
+            document.querySelector('.chatbot-input button').disabled = true;
+        }
+
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            document.querySelector('.chatbot-input input').disabled = false;
+            document.querySelector('.chatbot-input button').disabled = false;
+        }
+
+        function clearChat() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            messagesContainer.innerHTML = '';
+            hidePopup();
+            displayGreeting(); // Greet the user again after clearing chat
+        }
+
+        // Ensure the chat window is closed by default
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('chatbotWindow').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
+
