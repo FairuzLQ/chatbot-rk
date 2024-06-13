@@ -48,7 +48,7 @@
         .chatbot-window {
             display: none;
             position: fixed;
-            bottom: 90px; /* Increased distance */
+            bottom: 90px;
             right: 20px;
             width: 350px;
             height: 500px;
@@ -78,7 +78,7 @@
             color: white;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
-            font-size: 20px; /* Larger font size */
+            font-size: 20px;
         }
 
         .chatbot-header .header-content {
@@ -125,7 +125,7 @@
         }
 
         .chatbot-input input:focus {
-            border-color: #ffd200; /* Change border color to yellow on focus */
+            border-color: #ffd200;
         }
 
         .chatbot-input button {
@@ -170,8 +170,8 @@
         }
 
         .message-container img {
-            width: 40px;  /* Increase the width */
-            height: 40px; /* Increase the height */
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             margin: 0 10px;
         }
@@ -286,6 +286,69 @@
             background-color: rgba(0,0,0,0.5);
             z-index: 1000;
         }
+
+        @media screen and (max-width: 375px) {
+            .chatbot-window {
+                width: 100%;
+                height: calc(100% - 80px); 
+                bottom: 80px; 
+                right: 0;
+                border-radius: 0;
+            }
+
+            .chatbot-button {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .chatbot-header {
+                font-size: 16px;
+            }
+
+            .chatbot-header img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .chatbot-input input {
+                padding: 8px;
+                margin-right: 5px;
+            }
+
+            .chatbot-input button {
+                padding: 8px;
+            }
+
+            .message-container img {
+                width: 30px;
+                height: 30px;
+                margin: 0 5px;
+            }
+
+            .message {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .recommendation {
+                padding: 8px;
+            }
+
+            .popup {
+                width: 90%;
+                padding: 10px;
+            }
+
+            .popup .popup-header {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+
+            .popup .popup-buttons button {
+                padding: 8px;
+                margin-top: 3px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -398,7 +461,7 @@
             }, 2000);
 
             setTimeout(() => {
-                greetingMessageElement.innerText = "Halo, ada yang bisa Runi bantu? :)";
+                greetingMessageElement.innerText = "Halo, ada yang bisa Runi bantu? :) \n\n Silahkan pilih menu di bawah atau ketik pertanyaan kamu.";
                 timeStamp.innerText = new Date().toLocaleTimeString();
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 displayRecommendations();
@@ -496,7 +559,7 @@
                     botMessageElement.innerText = responseData.response;
                     botTimeStamp.innerText = new Date().toLocaleTimeString();
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    if (responseData.tag === 'diluar_konteks') {
+                    if (responseData.tag === 'diluar_konteks' || responseData.confidence <= 0.7) {
                         displayRecommendations();
                     }
                 })
@@ -541,6 +604,6 @@
             document.getElementById('chatbotWindow').style.display = 'none';
         });
     </script>
+
 </body>
 </html>
-
