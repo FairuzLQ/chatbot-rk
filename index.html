@@ -384,6 +384,61 @@
     <script>
         let isFirstTime = true;
 
+        const initialRecommendations = [
+            "Cara Pesan",
+            "Layanan Rumahkini",
+            "Tentang Runi"
+        ];
+
+        const layananRumahkiniRecommendations = [
+            "Paket Reguler",
+            "Paket Plus",
+            "Paket Spesial"
+        ];
+
+        const pemesananRecommendations = [
+            "Layanan Rumahkini",
+            "Pesan Sekarang"
+        ];
+
+        const paketRecommendations = [
+            "Pesan Sekarang",
+            "Harga",
+            "Syarat Layanan"
+        ];
+
+        const hargaRecommendations = [
+            "Cara Pesan",
+            "Layanan Rumahkini",
+            "Lama Pengerjaan",
+            "Syarat Layanan",
+        ];
+
+        const syaratLayananRecommendations = [
+            "Cara Pesan",
+            "Layanan Rumahkini",
+            "Harga",
+            "Pesan Sekarang"
+        ];
+
+        const konsultasiRecommendations = [
+            "Pesan Sekarang",
+            "Cara Pesan",
+            "Syarat Layanan"
+        ];
+
+        const runiRecommendations = [
+            "Apa yang bisa dibantu Runi?"
+        ];
+
+        const perekrutanRecommendations = [
+            "Karir"
+        ];
+
+        const hubungiKamiRecommendations = [
+            "Chat dengan CS"
+        ];
+
         const recommendations = [
             "Harga",
             "Tentang Runi",
@@ -464,8 +519,244 @@
                 greetingMessageElement.innerText = "Halo, ada yang bisa Runi bantu? :) \n\n Silahkan pilih menu di bawah atau ketik pertanyaan kamu.";
                 timeStamp.innerText = new Date().toLocaleTimeString();
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                displayRecommendations();
+                displayInitialRecommendations();
             }, 3000);
+        }
+
+        function displayInitialRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            initialRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                recommendationElement.onclick = () => {
+                    document.getElementById('message').value = rec;
+                    sendMessage();
+                };
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayLayananRumahkiniRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            layananRumahkiniRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                recommendationElement.onclick = () => {
+                    document.getElementById('message').value = rec;
+                    sendMessage();
+                };
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayPemesananRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            pemesananRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                if (rec === 'Pesan Sekarang') {
+                    recommendationElement.onclick = () => {
+                        window.location.href = 'https://rumahkini.com/paket-desain-rumah';
+                    };
+                } else {
+                    recommendationElement.onclick = () => {
+                        document.getElementById('message').value = rec;
+                        sendMessage();
+                    };
+                }
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayPaketRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            paketRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                if (rec === 'Pesan Sekarang') {
+                    recommendationElement.onclick = () => {
+                        window.location.href = 'https://rumahkini.com/paket-desain-rumah';
+                    };
+                } else {
+                    recommendationElement.onclick = () => {
+                        document.getElementById('message').value = rec;
+                        sendMessage();
+                    };
+                }
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayHargaRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            hargaRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                recommendationElement.onclick = () => {
+                    document.getElementById('message').value = rec;
+                    sendMessage();
+                };
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displaySyaratLayananRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            syaratLayananRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                if (rec === 'Pesan Sekarang') {
+                    recommendationElement.onclick = () => {
+                        window.location.href = 'https://rumahkini.com/paket-desain-rumah';
+                    };
+                } else {
+                    recommendationElement.onclick = () => {
+                        document.getElementById('message').value = rec;
+                        sendMessage();
+                    };
+                }
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayKonsultasiRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            konsultasiRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                if (rec === 'Pesan Sekarang') {
+                    recommendationElement.onclick = () => {
+                        window.location.href = 'https://rumahkini.com/paket-desain-rumah';
+                    };
+                } else {
+                    recommendationElement.onclick = () => {
+                        document.getElementById('message').value = rec;
+                        sendMessage();
+                    };
+                }
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayRuniRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            runiRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                recommendationElement.onclick = () => {
+                    document.getElementById('message').value = rec;
+                    sendMessage();
+                };
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayPerekrutanRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            perekrutanRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                if (rec === 'Karir') {
+                    recommendationElement.onclick = () => {
+                        window.location.href = 'https://rumahkini.com/karir';
+                    };
+                } else {
+                    recommendationElement.onclick = () => {
+                        document.getElementById('message').value = rec;
+                        sendMessage();
+                    };
+                }
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displayHubungiKamiRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainer = document.createElement('div');
+            recommendationContainer.className = 'recommendation-container';
+
+            hubungiKamiRecommendations.forEach(rec => {
+                const recommendationElement = document.createElement('div');
+                recommendationElement.className = 'recommendation';
+                recommendationElement.innerText = rec;
+                if (rec === 'Chat dengan CS') {
+                    recommendationElement.onclick = () => {
+                        window.location.href = 'https://wa.me/6281260004256?text=Halo,%0Asaya%20ingin%20bertanya';
+                    };
+                } else {
+                    recommendationElement.onclick = () => {
+                        document.getElementById('message').value = rec;
+                        sendMessage();
+                    };
+                }
+                recommendationContainer.appendChild(recommendationElement);
+            });
+
+            messagesContainer.appendChild(recommendationContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
         function displayRecommendations() {
@@ -556,11 +847,31 @@
                 .then(response => response.json())
                 .then(data => {
                     const responseData = data.data;
-                    botMessageElement.innerText = responseData.response;
+                    botMessageElement.innerText = formatResponse(responseData.response);
                     botTimeStamp.innerText = new Date().toLocaleTimeString();
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                     if (responseData.tag === 'diluar_konteks' || responseData.confidence <= 0.7) {
-                        displayRecommendations();
+                        displayInitialRecommendations();
+                    } else if (responseData.tag === 'layanan_rumahkini') {
+                        displayLayananRumahkiniRecommendations();
+                    } else if (responseData.tag === 'pemesanan') {
+                        displayPemesananRecommendations();
+                    } else if (responseData.tag.includes('paket')) {
+                        displayPaketRecommendations();
+                    } else if (responseData.tag === 'harga') {
+                        displayHargaRecommendations();
+                    } else if (responseData.tag === 'syarat_layanan') {
+                        displaySyaratLayananRecommendations();
+                    } else if (responseData.tag === 'konsultasi') {
+                        displayKonsultasiRecommendations();
+                    } else if (responseData.tag === 'runi') {
+                        displayRuniRecommendations();
+                    } else if (responseData.tag === 'perekrutan') {
+                        displayPerekrutanRecommendations();
+                    } else if (responseData.tag === 'hubungi_kami') {
+                        displayHubungiKamiRecommendations();
+                    } else if (responseData.tag === 'sapaan') {
+                        displayInitialRecommendations();
                     }
                 })
                 .catch(error => {
@@ -597,6 +908,12 @@
             messagesContainer.innerHTML = '';
             hidePopup();
             displayGreeting(); // Greet the user again after clearing chat
+        }
+
+        function formatResponse(response) {
+            return response.replace(/https:\/\/[\w./?=#]+/g, match => {
+                return `<a href="${match}" target="_blank">Klik Disini</a>`;
+            });
         }
 
         // Ensure the chat window is closed by default
