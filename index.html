@@ -543,7 +543,16 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
+        function clearRecommendations() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const recommendationContainers = messagesContainer.getElementsByClassName('recommendation-container');
+            while (recommendationContainers.length > 0) {
+                recommendationContainers[0].parentNode.removeChild(recommendationContainers[0]);
+            }
+        }
+
         function displayLayananRumahkiniRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -564,6 +573,7 @@
         }
 
         function displayPemesananRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -590,6 +600,7 @@
         }
 
         function displayPaketRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -616,6 +627,7 @@
         }
 
         function displayHargaRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -636,6 +648,7 @@
         }
 
         function displaySyaratLayananRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -662,6 +675,7 @@
         }
 
         function displayKonsultasiRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -688,6 +702,7 @@
         }
 
         function displayRuniRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -708,6 +723,7 @@
         }
 
         function displayPerekrutanRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -734,6 +750,7 @@
         }
 
         function displayHubungiKamiRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -760,6 +777,7 @@
         }
 
         function displayRecommendations() {
+            clearRecommendations();
             const messagesContainer = document.getElementById('chatbotMessages');
             const recommendationContainer = document.createElement('div');
             recommendationContainer.className = 'recommendation-container';
@@ -782,6 +800,8 @@
         function sendMessage() {
             const message = document.getElementById('message').value;
             if (!message) return;
+
+            clearRecommendations();
             
             const messagesContainer = document.getElementById('chatbotMessages');
             
