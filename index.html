@@ -366,8 +366,8 @@
         </div>
         <div class="chatbot-messages" id="chatbotMessages"></div>
         <div class="chatbot-input">
-            <input type="text" id="message" placeholder="Tulis pesan..." onkeydown="checkEnter(event)">
-            <button onclick="sendMessage()">
+            <input type="text" id="message" placeholder="Tulis pesan..." onkeydown="checkEnter(event)" disabled>
+            <button onclick="sendMessage()" disabled>
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
@@ -520,6 +520,7 @@
                 timeStamp.innerText = new Date().toLocaleTimeString();
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 displayInitialRecommendations();
+                enableUserInput();
             }, 3000);
         }
 
@@ -825,6 +826,10 @@
             // Clear input
             document.getElementById('message').value = '';
 
+            // Disable input and send button
+            document.getElementById('message').disabled = true;
+            document.querySelector('.chatbot-input button').disabled = true;
+
             const botMessageContainer = document.createElement('div');
             botMessageContainer.className = 'message-container bot';
 
@@ -893,12 +898,14 @@
                     } else if (responseData.tag === 'sapaan') {
                         displayInitialRecommendations();
                     }
+                    enableUserInput();
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     botMessageElement.innerText = "Mohon maaf, sepertinya server Runi sedang bermasalah.";
                     botTimeStamp.innerText = new Date().toLocaleTimeString();
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    enableUserInput();
                 });
             }, 3000);
         }
@@ -912,28 +919,37 @@
         function showPopup() {
             document.getElementById('popup').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
-            document.querySelector('.chatbot-input input').disabled = true;
-            document.querySelector('.chatbot-input button').disabled = true;
+            disableUserInput();
         }
 
         function hidePopup() {
             document.getElementById('popup').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
-            document.querySelector('.chatbot-input input').disabled = false;
-            document.querySelector('.chatbot-input button').disabled = false;
+            enableUserInput();
         }
 
         function clearChat() {
             const messagesContainer = document.getElementById('chatbotMessages');
             messagesContainer.innerHTML = '';
             hidePopup();
+            disableUserInput();
             displayGreeting(); // Greet the user again after clearing chat
         }
 
         function formatResponse(response) {
             return response.replace(/https:\/\/[\w./?=#]+/g, match => {
-                return `<a href="${match}" target="_blank">Klik Disini</a>`;
+                return `\n\n ${match}`;
             });
+        }
+
+        function disableUserInput() {
+            document.getElementById('message').disabled = true;
+            document.querySelector('.chatbot-input button').disabled = true;
+        }
+
+        function enableUserInput() {
+            document.getElementById('message').disabled = false;
+            document.querySelector('.chatbot-input button').disabled = false;
         }
 
         // Ensure the chat window is closed by default
