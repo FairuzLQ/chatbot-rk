@@ -859,7 +859,7 @@
             setTimeout(() => {
                 botMessageElement.innerText = "...";
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 2000);
+            }, 1000);
 
             setTimeout(() => {
                 fetch('https://aggressive-mada-upnjakarta-f5379657.koyeb.app/predict', {
@@ -896,6 +896,8 @@
                     } else if (responseData.tag === 'hubungi_kami') {
                         displayHubungiKamiRecommendations();
                     } else if (responseData.tag === 'sapaan') {
+                        displayInitialRecommendations();
+                    } else if (responseData.tag === 'kemampuan_runi') {
                         displayInitialRecommendations();
                     }
                     enableUserInput();
